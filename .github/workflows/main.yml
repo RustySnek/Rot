@@ -2,11 +2,11 @@ name: Main
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
     tags:
       - "*-?v[0-9]+*"
   pull_request:
-    branches: ["main"]
+    branches: ["master"]
     types: [opened, synchronize]
 
 permissions:
@@ -14,7 +14,6 @@ permissions:
 
 env:
   GHCR_REGISTRY: ghcr.io
-  DOCKER_USERNAME: ignisda
 
 jobs:
   pre-workflow-checks:
@@ -36,13 +35,9 @@ jobs:
             const repositoryName = context.payload.repository.name;
             const owner = context.repo.owner;
             const ghcrRegistry = process.env.GHCR_REGISTRY;
-            const dockerUsername = process.env.DOCKER_USERNAME;
 
             let imageNames = [
-              `name=${dockerUsername}/${repositoryName}`,
               `name=${ghcrRegistry}/${owner}/${repositoryName}`,
-              `name=${dockerUsername}/${repositoryName}-pro`,
-              `name=${ghcrRegistry}/${owner}/${repositoryName}-pro`,
             ];
 
             let shouldRun = 'false';
@@ -131,7 +126,6 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - target: x86_64-unknown-linux-gnu
           - target: aarch64-unknown-linux-gnu
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
@@ -190,7 +184,7 @@ jobs:
       - pre-workflow-checks
       - build-backend
     if: needs.pre-workflow-checks.outputs.should-run == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     permissions:
       packages: write
     steps:
@@ -201,8 +195,6 @@ jobs:
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         with:
           path: ${{ github.workspace }}/artifact/
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@65d18f8f8a05aab1b2d761032bec9cd5578caadb
       - name: Log in to the ghcr container registry
@@ -212,12 +204,6 @@ jobs:
           registry: ${{ env.GHCR_REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Log in to the docker hub container registry
-        uses: docker/login-action@28fdb31ff34708d19615a74d67103ddc2ea9725c
-        continue-on-error: true
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
       - name: Extract metadata for Docker
         id: meta
         uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051
@@ -225,11 +211,10 @@ jobs:
           images: ${{ needs.pre-workflow-checks.outputs.image-names }}
           tags: |
             type=ref,event=pr
-            type=raw,value=develop,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{is_default_branch}}
             type=semver,pattern=v{{version}},enable=${{ needs.pre-workflow-checks.outputs.should-release == 'true' }}
             type=semver,pattern=v{{major}}.{{minor}},enable=${{ needs.pre-workflow-checks.outputs.should-release == 'true' }}
             type=semver,pattern=v{{major}},enable=${{ needs.pre-workflow-checks.outputs.should-release == 'true' }}
-            type=raw,value=latest,enable=${{ needs.pre-workflow-checks.outputs.should-release == 'true' }}
             type=sha
       - name: Build and push
         uses: docker/build-push-action@9e436ba9f2d7bcd1d038c8e55d039d37896ddc5d
@@ -238,7 +223,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
 
   upload-kodi-plugin:
