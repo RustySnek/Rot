@@ -420,9 +420,6 @@ pub struct ImporterConfig {
 #[derive(Debug, Serialize, Deserialize, Clone, Config, MaskedConfig)]
 #[config(rename_all = "snake_case", env_prefix = "SERVER_")]
 pub struct ServerConfig {
-    /// The key that can be used to enable Ryot Pro features.
-    #[mask]
-    pub pro_key: String,
     /// The OIDC related settings.
     #[setting(nested)]
     #[mask_nested]

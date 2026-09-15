@@ -34,7 +34,7 @@
 <br/>
 
 <p align="center">
-  <img src="apps/website/public/cta-image.png" alt="Ryot Dashboard" width="700">
+  <img src="libs/assets/screenshots/cta-image.png" alt="Ryot Dashboard" width="700">
 </p>
 
 ## Quick Start
@@ -87,8 +87,8 @@ Try the [live demo](https://demo.ryot.io/_s/acl_vUMPnPirkHlT) to explore the int
 - Monitor progress with detailed graphs
 
 <p align="center">
-  <img src="apps/website/public/features/measurements-graph.png" alt="Workout tracking" width="250">
-  <img src="apps/website/public/features/exercise-dataset.png" alt="Measurements" width="250">
+  <img src="libs/assets/screenshots/measurements-graph.png" alt="Workout tracking" width="250">
+  <img src="libs/assets/screenshots/exercise-dataset.png" alt="Measurements" width="250">
 </p>
 
 ### Technical
@@ -100,9 +100,12 @@ Try the [live demo](https://demo.ryot.io/_s/acl_vUMPnPirkHlT) to explore the int
 - PWA support for mobile use
 - Written in Rust for performance
 
-## Pro Version
+## Feature availability
 
-Ryot Pro adds profile sharing, personalized recommendations, supercharged collections and more. [Learn more](https://ryot.io) about the pro version.
+This build has every feature enabled unconditionally, including profile sharing,
+personalized recommendations, workout templates and supercharged collections. The
+upstream license key check has been removed, so no license key is required and the
+server performs no license verification calls.
 
 ## Community
 

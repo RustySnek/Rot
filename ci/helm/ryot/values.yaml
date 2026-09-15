@@ -52,14 +52,6 @@ secret:
     existingSecret: ""
     # -- Key inside the existing secret that holds the admin access token.
     existingSecretKey: SERVER_ADMIN_ACCESS_TOKEN
-  # SERVER_PRO_KEY - OPTIONAL. Enables the Pro version.
-  proKey:
-    # -- Inline value. Used when existingSecret is empty. Leave empty for community version.
-    value: ""
-    # -- Reference an existing secret instead of storing the value here.
-    existingSecret: ""
-    # -- Key inside the existing secret that holds the pro key.
-    existingSecretKey: SERVER_PRO_KEY
 
 # =====================================================================
 # Dynamic sensitive environment variables (e.g. provider access tokens and

@@ -41,16 +41,6 @@ tests:
       - failedTemplate:
           errorPattern: "secret.adminAccessToken.existingSecretKey is required when secret.adminAccessToken.existingSecret is set"
 
-  - it: fails when pro key existingSecret has no key
-    set:
-      secret.adminAccessToken.value: tok
-      postgres.auth.password: pw
-      secret.proKey.existingSecret: my-secret
-      secret.proKey.existingSecretKey: ""
-    asserts:
-      - failedTemplate:
-          errorPattern: "secret.proKey.existingSecretKey is required when secret.proKey.existingSecret is set"
-
   # ---- bundled postgres ----
   - it: fails when bundled postgres has no password
     set:

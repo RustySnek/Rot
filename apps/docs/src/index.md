@@ -40,25 +40,10 @@ volumes:
 Some providers (eg: TMDB for movies, IGDB for video games) need access tokens. Please visit
 the [configuration](./configuration.md) page for more information.
 
-## Upgrading to Pro
+## Feature availability
 
-To see the features of the pro version, check the <a
-:href="`${variables.mainWebsiteUrl}/features`" target="_blank">features page</a>. To
-upgrade to the pro version, you need to provide a `SERVER_PRO_KEY` environment variable.
-You can get a key by purchasing it from the <a :href="variables.mainWebsiteUrl"
-target="_blank">website</a>.
-
-Once you have the key, you can set it in the `docker-compose.yml` file:
-
-```diff
-  ryot:
-    environment:
-+      - SERVER_PRO_KEY=<pro_key_issued_to_you>
-```
-
-If the key is invalid or your subscription has expired, the server will automatically switch
-to the community version. Since the two versions are compatible, you can switch between
-them by simply fixing the key and restarting the server.
+This build enables every feature unconditionally. There is no license key and no
+license check: the server never contacts an external verification service.
 
 ## Releases
 

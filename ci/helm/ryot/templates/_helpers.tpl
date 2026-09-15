@@ -175,34 +175,6 @@ SERVER_ADMIN_ACCESS_TOKEN
 {{- end }}
 
 {{/*
-Name of the secret holding SERVER_PRO_KEY.
-*/}}
-{{- define "ryot.proKey.secretName" -}}
-{{- if .Values.secret.proKey.existingSecret -}}
-{{ .Values.secret.proKey.existingSecret }}
-{{- else -}}
-{{ include "ryot.secretName" . }}
-{{- end -}}
-{{- end }}
-
-{{- define "ryot.proKey.secretKey" -}}
-{{- if .Values.secret.proKey.existingSecret -}}
-{{ .Values.secret.proKey.existingSecretKey }}
-{{- else -}}
-SERVER_PRO_KEY
-{{- end -}}
-{{- end }}
-
-{{/*
-Whether SERVER_PRO_KEY is configured (inline or via existing secret).
-*/}}
-{{- define "ryot.proKey.enabled" -}}
-{{- if or .Values.secret.proKey.value .Values.secret.proKey.existingSecret -}}
-true
-{{- end -}}
-{{- end }}
-
-{{/*
 Database environment variables (shared by the Deployment and the helm test
 pod). Emits the POSTGRES_* / RYOT_DB_* helper vars plus DATABASE_URL. The URL is
 composed at runtime via $(VAR) interpolation so secret-sourced passwords are
@@ -271,8 +243,6 @@ Validation: fail fast on missing or inconsistent required configuration.
 {{- end -}}
 {{- /* SERVER_ADMIN_ACCESS_TOKEN (required) */ -}}
 {{- include "ryot.assertSecretRef" (dict "field" "secret.adminAccessToken" "cfg" .Values.secret.adminAccessToken "required" true) -}}
-{{- /* SERVER_PRO_KEY (optional, but secret ref must be consistent) */ -}}
-{{- include "ryot.assertSecretRef" (dict "field" "secret.proKey" "cfg" .Values.secret.proKey "required" false) -}}
 {{- /* Database */ -}}
 {{- if .Values.postgres.enabled -}}
 {{- if not .Values.postgres.image.repository -}}
@@ -326,7 +296,7 @@ Validation: fail fast on missing or inconsistent required configuration.
 after the chart's own env entries, and Kubernetes lets the last duplicate
 declaration win, so allowing them would silently override chart-managed
 values. */ -}}
-{{- $reserved := list "SERVER_ADMIN_ACCESS_TOKEN" "SERVER_PRO_KEY" "DATABASE_URL" "POSTGRES_USER" "POSTGRES_DB" "POSTGRES_PASSWORD" "RYOT_DB_HOST" "RYOT_DB_PORT" "RYOT_DB_NAME" "RYOT_DB_USER" "RYOT_DB_PASSWORD" -}}
+{{- $reserved := list "SERVER_ADMIN_ACCESS_TOKEN" "DATABASE_URL" "POSTGRES_USER" "POSTGRES_DB" "POSTGRES_PASSWORD" "RYOT_DB_HOST" "RYOT_DB_PORT" "RYOT_DB_NAME" "RYOT_DB_USER" "RYOT_DB_PASSWORD" -}}
 {{- range $key, $_ := .Values.secretEnv -}}
 {{- if has $key $reserved -}}
 {{- fail (printf "secretEnv.%s: this env var is chart-managed and cannot be set via secretEnv" $key) -}}

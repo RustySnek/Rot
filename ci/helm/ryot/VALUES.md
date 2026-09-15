@@ -87,9 +87,6 @@ The only self-hosted tracker you will ever need - track movies, shows, video gam
 | secret.adminAccessToken.existingSecret | string | `""` | Reference an existing secret instead of storing the value here. |
 | secret.adminAccessToken.existingSecretKey | string | `"SERVER_ADMIN_ACCESS_TOKEN"` | Key inside the existing secret that holds the admin access token. |
 | secret.adminAccessToken.value | string | `""` | Inline value. Used when existingSecret is empty. |
-| secret.proKey.existingSecret | string | `""` | Reference an existing secret instead of storing the value here. |
-| secret.proKey.existingSecretKey | string | `"SERVER_PRO_KEY"` | Key inside the existing secret that holds the pro key. |
-| secret.proKey.value | string | `""` | Inline value. Used when existingSecret is empty. Leave empty for community version. |
 | secretEnv | object | `{}` |  |
 | secretEnvFrom | object | `{}` |  |
 | securityContext | object | `{"runAsNonRoot":true,"runAsUser":1001}` | Container security context. The image already runs as the unprivileged user 1001 (ryot). |

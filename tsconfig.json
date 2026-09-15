@@ -12,9 +12,6 @@
 			"path": "apps/frontend"
 		},
 		{
-			"path": "apps/website"
-		},
-		{
 			"path": "libs/generated"
 		},
 		{

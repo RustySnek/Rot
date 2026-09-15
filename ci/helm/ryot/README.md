@@ -124,7 +124,6 @@ from the ConfigMap:
 | Env var                     | Value                                  | Existing-secret keys                                          |
 | --------------------------- | -------------------------------------- | ------------------------------------------------------------- |
 | `SERVER_ADMIN_ACCESS_TOKEN` | `secret.adminAccessToken.value` (required) | `secret.adminAccessToken.existingSecret` / `.existingSecretKey` |
-| `SERVER_PRO_KEY`            | `secret.proKey.value` (optional)         | `secret.proKey.existingSecret` / `.existingSecretKey`           |
 | `DATABASE_URL`              | bundled / `externalDatabase.url`       | `externalDatabase.existingSecret` / `.existingSecretKey`      |
 | provider tokens (any)       | `secretEnv` map                        | `secretEnvFrom` map                                           |
 
